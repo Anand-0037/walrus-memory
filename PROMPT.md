@@ -6,6 +6,16 @@ instruction. It assumes a Walrus Memory tool surface (`memwal_remember`,
 `memwal_recall`, `memwal_analyze`, `memwal_restore`, `memwal_health`) or the
 official SDK equivalents.
 
+> **Tool names vs. this repo's SDK.** The `memwal_*` names below are the
+> MCP tool convention. This repo does **not** run an MCP server — it calls
+> the SDK directly through the `getMemWal()` client. Map them 1:1:
+> `memwal_remember` → `memwal.rememberAndWait()` (or `rememberBulkAndWait()`
+> for 2+ facts), `memwal_recall` → `memwal.recall({ query })`,
+> `memwal_restore` → `memwal.restore(namespace, limit)`,
+> `memwal_health` → `memwal.health()`, `memwal_analyze` →
+> `memwal.analyzeAndWait()`. In this codebase, use the client methods, not
+> `memwal_*` tool calls.
+
 ```text
 SYSTEM PROMPT — Hackathon Build Memory (Walrus Memory)
 

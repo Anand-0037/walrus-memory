@@ -10,7 +10,10 @@ const memories = [
   "GOTCHA | submission form | MEMWAL_AGENT_ID is delegate public key hex (getPublicKeyHex), not MEMWAL_ACCOUNT_ID or Sui address | confirmed in GitHub issues #357/#364",
 ];
 
-for (const text of memories) {
-  const result = await memwal.rememberAndWait(text, undefined, { timeoutMs: 60000 });
-  console.log("stored:", result.blob_id, text.slice(0, 60) + "...");
-}
+const result = await memwal.rememberBulkAndWait(
+  memories.map((text) => ({ text })),
+  { timeoutMs: 90000 },
+);
+
+console.log("stored", result.results.length, "memories:");
+for (const r of result.results) console.log("  ", r.blob_id);

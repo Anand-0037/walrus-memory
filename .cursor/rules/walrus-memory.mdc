@@ -112,7 +112,13 @@ mistake you already made and fixed.
 
 ## SDK helper
 
-- Server-only client: `lib/memwal.ts` → `getMemWal(namespace?)`
+- This repo has NO MCP server. The `memwal_*` tool names above are the MCP
+  convention; here you call the SDK client directly via `getMemWal()`. Map:
+  `memwal_remember` → `memwal.rememberAndWait()` / `rememberBulkAndWait()`,
+  `memwal_recall` → `memwal.recall({ query })`, `memwal_restore` →
+  `memwal.restore(ns, limit)`, `memwal_health` → `memwal.health()`,
+  `memwal_analyze` → `memwal.analyzeAndWait()`.
+- Client: `lib/memwal.ts` → `getMemWal(namespace?)` (validates env vars)
 - Env vars in `.env.local`: `MEMWAL_PRIVATE_KEY`, `MEMWAL_ACCOUNT_ID`, `MEMWAL_SERVER_URL`
-- Test script: `bun --env-file=.env.local run scripts/test-memwal.ts`
+- Scripts: `bun run status` · `bun run test:memwal` · `bun run seed` · `bun run seed:session2`
 - Agent ID for submission form: `97a527052c1f8c64d2353f58ae53c11cd2353013d2bf1d5380611822c6c5c6e3` (getPublicKeyHex, not account ID)

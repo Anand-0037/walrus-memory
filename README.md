@@ -63,7 +63,7 @@ blobs to **Walrus Mainnet**.
 | --- | --- |
 | **Agent ID** (`getPublicKeyHex`) | `97a527052c1f8c64d2353f58ae53c11cd2353013d2bf1d5380611822c6c5c6e3` |
 | **Namespace** | `hackathon:walrus-prompt-jam` |
-| **Mainnet blobs written** | 6 and growing (via `restore()` `total`) |
+| **Mainnet blobs written** | 12 and growing (via `restore()` `total`) |
 | **Relayer health** | `status: ok`, `mode: production` |
 | **Sample recall** | query "test hackathon setup" → hit at distance `0.045` |
 
@@ -78,9 +78,11 @@ bun --env-file=.env.local run scripts/status.ts   # agent id + blob count + reca
 ## How it's wired
 
 ```
-lib/memwal.ts              # getMemWal(namespace) — configured SDK client (server-only)
+lib/memwal.ts              # getMemWal(namespace) — configured SDK client (env-validated)
 scripts/test-memwal.ts     # health + throwaway write/recall smoke test
-scripts/seed-memories.ts   # writes the project's DECISION/GOTCHA memories
+scripts/seed-memories.ts   # bulk-writes the project's initial DECISION/GOTCHA memories
+scripts/seed-session2.ts   # bulk-writes session-2 DECISION/GOTCHA memories
+scripts/seed-session3.ts   # bulk-writes session-3 fixes (doc drift, SDK mapping, env validation)
 scripts/status.ts          # agent id + Mainnet blob count + recall proof
 .cursor/rules/walrus-memory.mdc  # the prompt, as a standing Cursor rule
 PROMPT.md                  # the copy-paste prompt (the actual submission)
@@ -90,11 +92,17 @@ PROMPT.md                  # the copy-paste prompt (the actual submission)
 // lib/memwal.ts
 import { MemWal } from "@mysten-incubation/memwal";
 
+function requireEnv(name: string): string {
+  const value = process.env[name];
+  if (!value) throw new Error(`Missing env var ${name}`);
+  return value;
+}
+
 export function getMemWal(namespace = "hackathon:walrus-prompt-jam") {
   return MemWal.create({
-    key: process.env.MEMWAL_PRIVATE_KEY!,
-    accountId: process.env.MEMWAL_ACCOUNT_ID!,
-    serverUrl: process.env.MEMWAL_SERVER_URL!,
+    key: requireEnv("MEMWAL_PRIVATE_KEY"),
+    accountId: requireEnv("MEMWAL_ACCOUNT_ID"),
+    serverUrl: requireEnv("MEMWAL_SERVER_URL"),
     namespace,
   });
 }
@@ -117,4 +125,3 @@ the three required vars. No keys are committed to this repo.
 ---
 
 Built for the Walrus Memory Prompt Jam. Prompt, code, and proof are all in this repo.
-# walrus-memory

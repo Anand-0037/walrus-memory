@@ -9,8 +9,7 @@ dist
 # code coverage
 coverage
 *.lcov
-hack/ 
-digest.txt 
+
 # logs
 logs
 _.log
@@ -23,14 +22,20 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 .env.production.local
 .env.local
 
-
+# caches
 .eslintcache
 .cache
 *.tsbuildinfo
 
+# IntelliJ based IDEs
 .idea
 
+# Finder (MacOS) folder config
 .DS_Store
 
-
+# Internal research & live credentials — NEVER publish.
+# hack/notion-research.md contains the live MEMWAL_PRIVATE_KEY.
 hack/
+
+# Local digest exports (not part of the submission)
+digest.txt
