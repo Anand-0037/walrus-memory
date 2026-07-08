@@ -1,0 +1,21 @@
+{
+  "name": "continuum-walrus-memory",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "status": "bun --env-file=.env.local run scripts/status.ts",
+    "test:memwal": "bun --env-file=.env.local run scripts/test-memwal.ts",
+    "seed": "bun --env-file=.env.local run scripts/seed-memories.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@mysten-incubation/memwal": "^0.0.7"
+  }
+}
